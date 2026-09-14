@@ -6,7 +6,7 @@
  - Adai Yisah
 
 ## Table of contents
-- [1. Introduction](#1-introduction): Brief description of our 
+- [1. Introduction](#1-introduction)
 - [2. Design Problem](#2-design-problem)
     - [2.1 Problem Definition](#21-problem-definition)
     - [2.2 Design Requirements](#22-design-requirements)
