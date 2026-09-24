@@ -116,9 +116,9 @@ Solution: The development team should focus on Confidentiality, Privacy and resp
 
 **Architectural**:
 We are using MVC architecture for this project. It follows the principle of “Separation of concerns”. It organizes the code in an efficient way by separating it into different parts based on its purpose rather than mixing all the responsibilities.
-&nbsp;&nbsp;&nbsp;&nbsp;Model: This part of code deals with the data of the application
-&nbsp;&nbsp;&nbsp;&nbsp;View: This part of code deals with the UI of the application 
-&nbsp;&nbsp;&nbsp;&nbsp;Controller: This part of code deals with the functionality of the application
+- Model: This part of code deals with the data of the application
+- View: This part of code deals with the UI of the application 
+- Controller: This part of code deals with the functionality of the application
 
 **Testing Constraints**: 
 Testing requirements create several testing constraints while building the project. The following testing techniques must be used in this project. 
