@@ -138,7 +138,19 @@ Testing requirements create several testing constraints while building the proje
 
 ### 3.1 Solution 1
 
+![Solution 1 Class Diagram](PDFs/Diagrams/ENSE%20375%20-%20Solution%201%20Class%20Diagram.png)
+
+Our first solution was designed with the MVP (Model-View-Presenter) architecture. Initially, we have a single LoginView class that handles all user interactions including the main menu, creating and deleting entries, listing entries, and prompting input. A ProgrammingController was placed between the View and the model. It unlocks the database, derives the primary key, created and edited logins, and generates TOTP (Time-Based One-Time Generator). In the model, it has a DatabaseManager for file storage, Primary key is used for encryption and decryption. There are also other abstract classes called LoginEntry with TextLogin and TOTPLogin as subclasses. HMACUtil for TOTP Calculation.  
+
+We did not select the design due to this testability. ProgramController has too many responsibilities including handling databases access, TOTP generation and entry management and authentication. LoginView combines all the mainview, login entries and all kinds of user inputs cannot be tested alone. Testing any of them needs to be set up the other and it would be large and the testing is dependent on the other. The controller and the view depend on each other, and we couldn’t test the controller logic as there is no real interface.
+
 ### 3.2 Solution 2
+
+![Solution 2 Class Diagram](PDFs/Diagrams/ENSE%20375%20-%20Solution%202%20Class%20Diagram.png)
+
+Our solution 2 is the improved solution of Solution 1. It was also designed based on the MVP architecture. Here the View is split into four classes: ProgramView, AuthView, ListView, EntryView. Each of them handles every part of the user flow which includes Initiating the application, authenticating it, Listing and Editing the entries. Each of them refers to the ProgramPresenter, which includes initializing the database, editing, saving and reading login data, create and edit logins and requesting and generating TOTPs. HMACUtil was moved from the TOTPLogin class to the Presenter class to put additional responsibility on the ProgramPresenter for translating data structures between the model and the view, and to reduce having unencrypted data stored in memory for extended periods of time. Only the ProgramPresenter communicates with the DatabaseManager, HMACUtil, PrimaryKey and LoginEntry classes.
+
+This design can be easily tested for various reasons, such as all the Views can be tested with a mock presenter. Each view is small, so it can be checked alone to confirm whether it calls the right presenter method. All the components must be tested independently. Primary Key can be checked by encrypting and decrypting the known strings. HMACUtil function can be tested and verified by known TOTP test vectors. Presenter logic can be tested without any UI. The presenter never handles any input or output directly and can be tested by function calling methods. The user input is also isolated and it is easy to test. All these properties let us test each component by itself before even implementing them, So, it seems to be a better and improved version of Solution 1.
 
 ### 3.3 Final Solution
 
