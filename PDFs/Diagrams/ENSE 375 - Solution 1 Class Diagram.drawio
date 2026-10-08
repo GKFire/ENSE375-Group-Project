@@ -1,0 +1,218 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="Page-1" id="BOFPsEUgoZAaqMjdTXn_">
+    <mxGraphModel dx="3455" dy="988" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="W1O71O-Xam_czmwdQFr6-1" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" value="&amp;lt;&amp;lt;abstract&amp;gt;&amp;gt; LoginEntry" vertex="1">
+          <mxGeometry height="250" width="260" x="120" y="340" as="geometry" />
+        </mxCell>
+        <mxCell id="W1O71O-Xam_czmwdQFr6-2" parent="W1O71O-Xam_czmwdQFr6-1" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" value="&lt;div&gt;# username: String&lt;/div&gt;&lt;div&gt;# domain: String&lt;/div&gt;&lt;div&gt;# lastModified: Calendar&lt;/div&gt;&lt;div&gt;# created: Calendar&lt;/div&gt;" vertex="1">
+          <mxGeometry height="74" width="260" y="26" as="geometry" />
+        </mxCell>
+        <mxCell id="W1O71O-Xam_czmwdQFr6-3" parent="W1O71O-Xam_czmwdQFr6-1" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" value="" vertex="1">
+          <mxGeometry height="8" width="260" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="W1O71O-Xam_czmwdQFr6-4" parent="W1O71O-Xam_czmwdQFr6-1" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" value="&lt;div&gt;+ abstract getPassword(): String&lt;/div&gt;&lt;div&gt;+ abstract updatePassword(password: String):&amp;nbsp;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;boolean&lt;/div&gt;&lt;div&gt;+ getUsername(): String&lt;/div&gt;&lt;div&gt;+ updateUsername(String): void&lt;br&gt;+ getWebsiteDomain(): String&lt;/div&gt;&lt;div&gt;- updateLastModified(): void&lt;/div&gt;&lt;div&gt;+ getLastModified(): String&lt;/div&gt;&lt;div&gt;+ getCreated(): String&lt;/div&gt;" vertex="1">
+          <mxGeometry height="142" width="260" y="108" as="geometry" />
+        </mxCell>
+        <mxCell id="W1O71O-Xam_czmwdQFr6-5" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" value="&lt;div&gt;TextLogin&lt;/div&gt;" vertex="1">
+          <mxGeometry height="120" width="260" x="560" y="340" as="geometry" />
+        </mxCell>
+        <mxCell id="W1O71O-Xam_czmwdQFr6-6" parent="W1O71O-Xam_czmwdQFr6-5" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" value="- password: String" vertex="1">
+          <mxGeometry height="37" width="260" y="26" as="geometry" />
+        </mxCell>
+        <mxCell id="W1O71O-Xam_czmwdQFr6-7" parent="W1O71O-Xam_czmwdQFr6-5" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" value="" vertex="1">
+          <mxGeometry height="8" width="260" y="63" as="geometry" />
+        </mxCell>
+        <mxCell id="W1O71O-Xam_czmwdQFr6-8" parent="W1O71O-Xam_czmwdQFr6-5" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" value="&lt;div&gt;+ getPassword(): String&lt;/div&gt;&lt;div&gt;+ updatePassword(password: String): boolean&lt;/div&gt;" vertex="1">
+          <mxGeometry height="49" width="260" y="71" as="geometry" />
+        </mxCell>
+        <mxCell id="W1O71O-Xam_czmwdQFr6-9" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" value="TOTPLogin" vertex="1">
+          <mxGeometry height="215" width="260" x="560" y="500" as="geometry" />
+        </mxCell>
+        <mxCell id="W1O71O-Xam_czmwdQFr6-10" parent="W1O71O-Xam_czmwdQFr6-9" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" value="&lt;div&gt;- secret_key: String&lt;/div&gt;&lt;div&gt;- recovery_keys: List&amp;lt;String&amp;gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="49" width="260" y="26" as="geometry" />
+        </mxCell>
+        <mxCell id="W1O71O-Xam_czmwdQFr6-11" parent="W1O71O-Xam_czmwdQFr6-9" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" value="" vertex="1">
+          <mxGeometry height="8" width="260" y="75" as="geometry" />
+        </mxCell>
+        <mxCell id="W1O71O-Xam_czmwdQFr6-12" parent="W1O71O-Xam_czmwdQFr6-9" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" value="&lt;div&gt;+ getPassword(): String&lt;/div&gt;&lt;div&gt;+ updatePassword(password: String): boolean&lt;/div&gt;&lt;div&gt;+ getRecoveryKeys(): List&amp;lt;String&amp;gt;&lt;/div&gt;&lt;div&gt;+ removeRecoveryKey(key: String): boolean&lt;/div&gt;&lt;div&gt;+ addRecoveryKey(key: String): boolean&lt;/div&gt;&lt;div&gt;+ getSecretKey(): String&lt;/div&gt;" vertex="1">
+          <mxGeometry height="132" width="260" y="83" as="geometry" />
+        </mxCell>
+        <mxCell id="W1O71O-Xam_czmwdQFr6-13" edge="1" parent="1" source="W1O71O-Xam_czmwdQFr6-5" style="endArrow=none;endSize=16;endFill=0;html=1;rounded=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.459;entryDx=0;entryDy=0;entryPerimeter=0;startArrow=block;startFill=0;" target="W1O71O-Xam_czmwdQFr6-2" value="Extends">
+          <mxGeometry relative="1" width="160" y="-10" as="geometry">
+            <mxPoint as="offset" />
+            <mxPoint x="530" y="399.91999999999996" as="sourcePoint" />
+            <mxPoint x="390" y="400" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="W1O71O-Xam_czmwdQFr6-14" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" value="&lt;div&gt;DatabaseManager&lt;/div&gt;" vertex="1">
+          <mxGeometry height="240" width="280" x="110" y="60" as="geometry" />
+        </mxCell>
+        <mxCell id="W1O71O-Xam_czmwdQFr6-15" parent="W1O71O-Xam_czmwdQFr6-14" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" value="&lt;div&gt;- database_file: File&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="49" width="280" y="26" as="geometry" />
+        </mxCell>
+        <mxCell id="W1O71O-Xam_czmwdQFr6-16" parent="W1O71O-Xam_czmwdQFr6-14" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" value="" vertex="1">
+          <mxGeometry height="8" width="280" y="75" as="geometry" />
+        </mxCell>
+        <mxCell id="W1O71O-Xam_czmwdQFr6-17" parent="W1O71O-Xam_czmwdQFr6-14" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" value="&lt;div&gt;+ databaseExists(): boolean&lt;/div&gt;&lt;div&gt;+ createNewDatabase(): boolean&lt;/div&gt;&lt;div&gt;+ readDatabase(): JSONObject&lt;/div&gt;&lt;div&gt;+ writeDatabase(encryptedJSON:&amp;nbsp;JSONObject):&amp;nbsp;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;boolean&lt;/div&gt;" vertex="1">
+          <mxGeometry height="157" width="280" y="83" as="geometry" />
+        </mxCell>
+        <mxCell id="W1O71O-Xam_czmwdQFr6-18" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" value="&lt;div&gt;ProgramPresenter&lt;/div&gt;" vertex="1">
+          <mxGeometry height="330" width="420" x="-380" y="340" as="geometry" />
+        </mxCell>
+        <mxCell id="W1O71O-Xam_czmwdQFr6-19" parent="W1O71O-Xam_czmwdQFr6-18" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" value="- logins: List&amp;lt;LoginEntry&amp;gt;&lt;br&gt;&lt;div&gt;- database: DatabaseManager&lt;/div&gt;&lt;div&gt;- primary_key: PrimaryKey&lt;/div&gt;" vertex="1">
+          <mxGeometry height="65.5" width="420" y="26" as="geometry" />
+        </mxCell>
+        <mxCell id="W1O71O-Xam_czmwdQFr6-20" parent="W1O71O-Xam_czmwdQFr6-18" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" value="" vertex="1">
+          <mxGeometry height="8" width="420" y="91.5" as="geometry" />
+        </mxCell>
+        <mxCell id="W1O71O-Xam_czmwdQFr6-21" parent="W1O71O-Xam_czmwdQFr6-18" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" value="&lt;div&gt;+ unlockDatabase(): boolean&lt;/div&gt;&lt;div&gt;+ getPrimaryPassword(): boolean&lt;/div&gt;&lt;div&gt;+ createNewDatabase(): boolean&lt;/div&gt;&lt;div&gt;+ readAndDecryptDatabase(): boolean&lt;/div&gt;&lt;div&gt;+ getLogins(): List&amp;lt;String&amp;gt;&lt;/div&gt;&lt;div&gt;+ getFilteredLogins(filterExp: String): List&amp;lt;String&amp;gt;&lt;/div&gt;&lt;div&gt;+ createNewTextLogin(username: String, password: String, website: String):&amp;nbsp;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;int&lt;/div&gt;&lt;div&gt;+ createNewTOTPLogin(username: String, secret_key: String, website:&amp;nbsp;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;String,&amp;nbsp;recovery_keys:&amp;nbsp;List&amp;lt;String&amp;gt;): int&lt;/div&gt;&lt;div&gt;+ getLogin(entryIndex: int): Map&amp;lt;String,String&amp;gt;&lt;/div&gt;&lt;div&gt;+ deleteExistingLogin(entryIndex: int): boolean&lt;/div&gt;&lt;div&gt;+ editExistingLogin(entryIndex:&amp;nbsp;int, changes: Map&amp;lt;String,String&amp;gt;): boolean&lt;/div&gt;&lt;div&gt;+ encryptAndWriteToDatabase(): boolean&lt;/div&gt;" vertex="1">
+          <mxGeometry height="230.5" width="420" y="99.5" as="geometry" />
+        </mxCell>
+        <mxCell id="W1O71O-Xam_czmwdQFr6-22" edge="1" parent="1" source="W1O71O-Xam_czmwdQFr6-19" style="endArrow=open;html=1;endSize=12;startArrow=diamondThin;startSize=14;startFill=0;edgeStyle=orthogonalEdgeStyle;rounded=0;entryX=0;entryY=0.73;entryDx=0;entryDy=0;entryPerimeter=0;exitX=1;exitY=0.825;exitDx=0;exitDy=0;exitPerimeter=0;" target="W1O71O-Xam_czmwdQFr6-2" value="">
+          <mxGeometry relative="1" y="10" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points" />
+            <mxPoint x="-20" y="420" as="sourcePoint" />
+            <mxPoint x="110" y="420" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="W1O71O-Xam_czmwdQFr6-23" connectable="0" parent="W1O71O-Xam_czmwdQFr6-22" style="edgeLabel;resizable=0;html=1;align=left;verticalAlign=top;" value="1" vertex="1">
+          <mxGeometry relative="1" x="-1" as="geometry">
+            <mxPoint x="10" y="-30" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="W1O71O-Xam_czmwdQFr6-24" connectable="0" parent="W1O71O-Xam_czmwdQFr6-22" style="edgeLabel;resizable=0;html=1;align=right;verticalAlign=top;" value="0..n" vertex="1">
+          <mxGeometry relative="1" x="1" as="geometry">
+            <mxPoint x="-10" y="-30" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="W1O71O-Xam_czmwdQFr6-25" edge="1" parent="1" source="W1O71O-Xam_czmwdQFr6-14" style="endArrow=none;html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;startArrow=block;startFill=1;endFill=0;exitX=0;exitY=0.25;exitDx=0;exitDy=0;entryX=0.472;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;" target="W1O71O-Xam_czmwdQFr6-18" value="">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="-190.1" y="120" />
+            </Array>
+            <mxPoint x="210" y="-110.55555555555554" as="sourcePoint" />
+            <mxPoint x="-190.08" y="330" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="W1O71O-Xam_czmwdQFr6-60" connectable="0" parent="W1O71O-Xam_czmwdQFr6-25" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="Requests Database Action" vertex="1">
+          <mxGeometry relative="1" x="0.9507" as="geometry">
+            <mxPoint y="-7" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="W1O71O-Xam_czmwdQFr6-61" connectable="0" parent="W1O71O-Xam_czmwdQFr6-25" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="Reads/writes from/to database" vertex="1">
+          <mxGeometry relative="1" x="-0.8532" y="-1" as="geometry">
+            <mxPoint x="-48" y="11" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="W1O71O-Xam_czmwdQFr6-28" edge="1" parent="1" source="W1O71O-Xam_czmwdQFr6-29" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;endFill=0;entryX=1;entryY=0.471;entryDx=0;entryDy=0;entryPerimeter=0;startArrow=block;startFill=1;" target="W1O71O-Xam_czmwdQFr6-21">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="60.03" y="823.03" />
+              <mxPoint x="60.03" y="548.1" />
+            </Array>
+            <mxPoint x="50" y="548" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="W1O71O-Xam_czmwdQFr6-29" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" value="PrimaryKey" vertex="1">
+          <mxGeometry height="195" width="260" x="120" y="703" as="geometry">
+            <mxRectangle height="30" width="150" x="-60" y="540" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="W1O71O-Xam_czmwdQFr6-30" parent="W1O71O-Xam_czmwdQFr6-29" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" value="&lt;div&gt;- primarykey: Key&lt;/div&gt;&lt;div&gt;- cipher_encrypt: Cipher&lt;/div&gt;&lt;div&gt;- cipher_decrypt: Cipher&lt;/div&gt;" vertex="1">
+          <mxGeometry height="49" width="260" y="26" as="geometry" />
+        </mxCell>
+        <mxCell id="W1O71O-Xam_czmwdQFr6-31" parent="W1O71O-Xam_czmwdQFr6-29" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" value="" vertex="1">
+          <mxGeometry height="8" width="260" y="75" as="geometry" />
+        </mxCell>
+        <mxCell id="W1O71O-Xam_czmwdQFr6-32" parent="W1O71O-Xam_czmwdQFr6-29" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" value="&lt;div&gt;+ buildKey&lt;/div&gt;&lt;div&gt;+ encodeData(originalString: String): String&lt;/div&gt;&lt;div&gt;+ decodeData(encyptedString: String): String&lt;/div&gt;" vertex="1">
+          <mxGeometry height="112" width="260" y="83" as="geometry" />
+        </mxCell>
+        <mxCell id="W1O71O-Xam_czmwdQFr6-33" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" value="HMACUtil" vertex="1">
+          <mxGeometry height="240" width="260" x="560" y="780" as="geometry" />
+        </mxCell>
+        <mxCell id="W1O71O-Xam_czmwdQFr6-34" parent="W1O71O-Xam_czmwdQFr6-33" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" value="&lt;div&gt;- base32: Base32&lt;/div&gt;- byte_buffer: ByteBuffer" vertex="1">
+          <mxGeometry height="94" width="260" y="26" as="geometry" />
+        </mxCell>
+        <mxCell id="W1O71O-Xam_czmwdQFr6-35" parent="W1O71O-Xam_czmwdQFr6-33" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" value="" vertex="1">
+          <mxGeometry height="8" width="260" y="120" as="geometry" />
+        </mxCell>
+        <mxCell id="W1O71O-Xam_czmwdQFr6-36" parent="W1O71O-Xam_czmwdQFr6-33" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" value="&lt;div&gt;+ HMAC_SHA_1(secret_key: String, offset:&amp;nbsp;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;long): byte[]&lt;/div&gt;&lt;div&gt;+ HOTP_SHA_1(secret_key: String, offset:&amp;nbsp;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;&#x9;&lt;/span&gt;long, radix: int): int&lt;/div&gt;&lt;div&gt;+ TOTP_SHA_1(secret_key: String): int&lt;/div&gt;&lt;div&gt;+ timeTilPasswordExpire(): int&lt;/div&gt;" vertex="1">
+          <mxGeometry height="112" width="260" y="128" as="geometry" />
+        </mxCell>
+        <mxCell id="W1O71O-Xam_czmwdQFr6-67" edge="1" parent="1" source="W1O71O-Xam_czmwdQFr6-37" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;endArrow=none;endFill=0;startArrow=block;startFill=1;" target="W1O71O-Xam_czmwdQFr6-62">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="W1O71O-Xam_czmwdQFr6-37" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" value="LoginView" vertex="1">
+          <mxGeometry height="217" width="280" x="-890" y="374" as="geometry" />
+        </mxCell>
+        <mxCell id="W1O71O-Xam_czmwdQFr6-38" parent="W1O71O-Xam_czmwdQFr6-37" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" value="- presenter: ProgramPresenter" vertex="1">
+          <mxGeometry height="26" width="280" y="26" as="geometry" />
+        </mxCell>
+        <mxCell id="W1O71O-Xam_czmwdQFr6-39" parent="W1O71O-Xam_czmwdQFr6-37" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" value="" vertex="1">
+          <mxGeometry height="8" width="280" y="52" as="geometry" />
+        </mxCell>
+        <mxCell id="W1O71O-Xam_czmwdQFr6-40" parent="W1O71O-Xam_czmwdQFr6-37" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" value="&lt;div&gt;+ init(): void&lt;/div&gt;&lt;div&gt;+ run(): void&lt;/div&gt;&lt;div&gt;+ mainMenu(): void&lt;/div&gt;&lt;div&gt;+ listLogins(): void&lt;/div&gt;&lt;div&gt;+ filterListLogins(): void&lt;/div&gt;&lt;div&gt;+ createNewLogin(): boolean&lt;/div&gt;&lt;div&gt;+ showLoginEntry(): void&lt;/div&gt;&lt;div&gt;+ editExistingLogin(): boolean&lt;/div&gt;&lt;div&gt;+ deleteLoginEntry(): boolean&lt;/div&gt;&lt;div&gt;- promptUserInput(prompt: String): String&lt;/div&gt;" vertex="1">
+          <mxGeometry height="157" width="280" y="60" as="geometry" />
+        </mxCell>
+        <mxCell id="W1O71O-Xam_czmwdQFr6-53" edge="1" parent="1" source="W1O71O-Xam_czmwdQFr6-33" style="endArrow=none;endFill=0;html=1;edgeStyle=orthogonalEdgeStyle;align=left;verticalAlign=top;rounded=0;startArrow=none;startFill=0;entryX=0;entryY=0.129;entryDx=0;entryDy=0;entryPerimeter=0;exitX=0;exitY=0.083;exitDx=0;exitDy=0;exitPerimeter=0;" target="W1O71O-Xam_czmwdQFr6-12" value="Computes one-time password">
+          <mxGeometry relative="1" x="-0.3892" y="80" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="480" y="800" />
+              <mxPoint x="480" y="600" />
+            </Array>
+            <mxPoint x="550" y="800" as="sourcePoint" />
+            <mxPoint x="550" y="600" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="W1O71O-Xam_czmwdQFr6-59" connectable="0" parent="W1O71O-Xam_czmwdQFr6-53" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="Supplies secret key" vertex="1">
+          <mxGeometry relative="1" x="0.4332" as="geometry">
+            <mxPoint y="-2" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="W1O71O-Xam_czmwdQFr6-55" edge="1" parent="1" source="W1O71O-Xam_czmwdQFr6-10" style="endArrow=none;endSize=16;endFill=0;html=1;rounded=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.718;entryDx=0;entryDy=0;entryPerimeter=0;startArrow=block;startFill=0;" target="W1O71O-Xam_czmwdQFr6-4" value="Extends">
+          <mxGeometry relative="1" width="160" x="0.0003" y="-10" as="geometry">
+            <mxPoint as="offset" />
+            <mxPoint x="560" y="551" as="sourcePoint" />
+            <mxPoint x="390" y="550" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="W1O71O-Xam_czmwdQFr6-56" edge="1" parent="1" source="W1O71O-Xam_czmwdQFr6-40" style="endArrow=block;html=1;edgeStyle=orthogonalEdgeStyle;rounded=0;exitX=1;exitY=0.357;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.219;entryDx=0;entryDy=0;entryPerimeter=0;endFill=1;" target="W1O71O-Xam_czmwdQFr6-21" value="">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="-470" y="460" as="sourcePoint" />
+            <mxPoint x="-420" y="490" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="W1O71O-Xam_czmwdQFr6-57" connectable="0" parent="W1O71O-Xam_czmwdQFr6-56" style="edgeLabel;resizable=0;html=1;align=left;verticalAlign=bottom;" value="sends user action" vertex="1">
+          <mxGeometry relative="1" x="-1" as="geometry">
+            <mxPoint x="10" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="W1O71O-Xam_czmwdQFr6-58" connectable="0" parent="W1O71O-Xam_czmwdQFr6-56" style="edgeLabel;resizable=0;html=1;align=right;verticalAlign=bottom;" value="sends data" vertex="1">
+          <mxGeometry relative="1" x="1" as="geometry">
+            <mxPoint x="-10" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="W1O71O-Xam_czmwdQFr6-62" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" value="Main" vertex="1">
+          <mxGeometry height="60" width="160" x="-830" y="656.5" as="geometry" />
+        </mxCell>
+        <mxCell id="W1O71O-Xam_czmwdQFr6-64" parent="W1O71O-Xam_czmwdQFr6-62" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" value="" vertex="1">
+          <mxGeometry height="8" width="160" y="26" as="geometry" />
+        </mxCell>
+        <mxCell id="W1O71O-Xam_czmwdQFr6-65" parent="W1O71O-Xam_czmwdQFr6-62" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" value="+ main(String[]): void" vertex="1">
+          <mxGeometry height="26" width="160" y="34" as="geometry" />
+        </mxCell>
+        <mxCell id="CUE2s3KmBiWRlhTNAlet-1" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="&lt;div align=&quot;left&quot;&gt;ENSE 375 - Project Solution Design - Class Diagram&lt;/div&gt;" vertex="1">
+          <mxGeometry height="30" width="300" x="-890" y="970" as="geometry" />
+        </mxCell>
+        <mxCell id="CUE2s3KmBiWRlhTNAlet-2" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;" value="Last Modified: Oct. 1st 2026" vertex="1">
+          <mxGeometry height="30" width="300" x="-890" y="990" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
