@@ -23,4 +23,19 @@ public class TextLogin extends LoginEntry {
 		this.password = password;
 		return true;
 	}
+	
+	@Override
+	public boolean equals(Object o) {
+		
+		if (o == this) return true;
+		if (!(o instanceof TextLogin)) return false;
+		
+		TextLogin o_entry = (TextLogin) o;
+		if (!this.username.equals(o_entry.getUsername())) return false;
+		if (!this.domain.equals(o_entry.getWebsiteDomain())) return false;
+		if (!(this.created.getTimeInMillis() == o_entry.getCreated())) return false;
+		if (!(this.lastModified.getTimeInMillis() == o_entry.getLastModified())) return false;
+		if (!this.password.equals(o_entry.getPassword())) return false;
+		return true;
+	}
 }

@@ -22,16 +22,21 @@ public class PrimaryKey {
 	private static Encoder encoder = Base64.getEncoder();
 	
 	private Key primaryKey;
-	private Cipher primary;
+	private Cipher cipher;
 	
-	public PrimaryKey(String userpassword) {
+	public static PrimaryKey derriveKey(String password) {
+		if (password == null) return null;
+		return new PrimaryKey(password);
+	}
+	
+	private PrimaryKey(String userpassword) {
 		try {
 			MessageDigest digest = MessageDigest.getInstance(HASH);
 			
 			digest.update(userpassword.getBytes());
 			
 			primaryKey = new SecretKeySpec(digest.digest(), CIPHER_METHOD);
-			primary = Cipher.getInstance("AES");
+			cipher = Cipher.getInstance(CIPHER_METHOD);
 			
 		} catch (NoSuchAlgorithmException e) {
 			e.printStackTrace();
@@ -41,32 +46,30 @@ public class PrimaryKey {
 	}
 	
 	public String encrypt(String input) {
+		if (input == null) return null;
 		try {
-			primary.init(Cipher.ENCRYPT_MODE, primaryKey);
-			byte[] buffer = primary.doFinal(input.getBytes());
-			return new String(encoder.encode(buffer));
-		} catch (InvalidKeyException e) {
-			e.printStackTrace();
+			cipher.init(Cipher.ENCRYPT_MODE, primaryKey);
+			byte[] buffer = encoder.encode(cipher.doFinal(input.getBytes()));
+			return new String(buffer);
 		} catch (IllegalBlockSizeException e) {
 			e.printStackTrace();
 		} catch (BadPaddingException e) {
-			e.printStackTrace();
+		} catch (InvalidKeyException e) {
 		}
 		
 		return null;
 	}
 	
 	public String decrypt(String input) {
+		if (input == null) return null;
 		try {
-			primary.init(Cipher.DECRYPT_MODE, primaryKey);
-			byte[] buffer = primary.doFinal(decoder.decode(input.getBytes()));
+			cipher.init(Cipher.DECRYPT_MODE, primaryKey);
+			byte[] buffer = cipher.doFinal(decoder.decode(input.getBytes()));
 			return new String(buffer);
-		} catch (InvalidKeyException e) {
-			e.printStackTrace();
 		} catch (IllegalBlockSizeException e) {
 			e.printStackTrace();
 		} catch (BadPaddingException e) {
-			e.printStackTrace();
+		} catch (InvalidKeyException e) {
 		}
 		
 		return null;

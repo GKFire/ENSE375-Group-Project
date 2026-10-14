@@ -1,5 +1,6 @@
 package ense375.personalpasswordmanager;
 
+import java.nio.file.Path;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +20,17 @@ public class ProgramPresenter {
 
 	public ProgramPresenter() {
 		logins = new ArrayList<LoginEntry>();
-		database = new DatabaseManager();
+		
+		Path config_dir = Path.of(System.getProperty("user.home"),
+				(System.getProperty("os.name").startsWith("Windows") ?
+						"Documents" : // If on windows, put into the user's documents directory
+						".config" // Otherwise, the user is on UNIX, so put into their .config folder
+				),
+				"ENSE375",
+				"PersonalManager",
+				"database.bin");
+		
+		database = new DatabaseManager(config_dir);
 		key = null;
 	}
 	

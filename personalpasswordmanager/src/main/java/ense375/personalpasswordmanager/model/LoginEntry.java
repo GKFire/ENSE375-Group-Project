@@ -33,12 +33,33 @@ public abstract class LoginEntry {
 		this.lastModified.setTimeInMillis(System.currentTimeMillis());
 	}
 	
-	public String getLastModified() {
+	public long getLastModified() {
+		return this.lastModified.getTimeInMillis();
+	}
+	
+	public long getCreated() {
+		return this.created.getTimeInMillis();
+	}
+	
+	public String getFormattedLastModified() {
 		return DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT).format(this.lastModified.getTime());
 	}
 	
-	public String getCreated() {
+	public String getFormattedCreated() {
 		return DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT).format(this.created.getTime());
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if (o == this) return true;
+		if (!(o instanceof LoginEntry)) return false;
+		
+		LoginEntry o_entry = (LoginEntry) o;
+		if (!this.username.equals(o_entry.getUsername())) return false;
+		if (!this.domain.equals(o_entry.getWebsiteDomain())) return false;
+		if (!(this.created.getTimeInMillis() == o_entry.getCreated())) return false;
+		if (!(this.lastModified.getTimeInMillis() == o_entry.getLastModified())) return false;
+		return true;
 	}
 	
 }
