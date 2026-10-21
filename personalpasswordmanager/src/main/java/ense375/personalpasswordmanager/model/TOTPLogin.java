@@ -28,9 +28,12 @@ public class TOTPLogin extends LoginEntry {
 		return this.key;
 	}
 	
+	public void setRecoveryKeys(List<String> recovery_keys) {
+		this.recovery_keys = new ArrayList<String>(recovery_keys);
+	}
+	
 	public boolean addRecoveryKey(String recovery_key) {
-		this.recovery_keys.add(recovery_key);
-		return true;
+		return this.recovery_keys.add(recovery_key);
 	}
 	
 	public boolean removeRecoveryKey(String recovery_key) {

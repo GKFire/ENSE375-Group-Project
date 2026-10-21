@@ -35,20 +35,19 @@ public class DatabaseManagerTest {
 		File file = date_file.toFile();
 		if (file.exists()) file.delete();
 		
-		entries.add(new TextLogin("myusername", "d0main.site.example", "thispasswordwouldbeencrypted"));
-		entries.add(new TextLogin("otherusername", "other.site.example", "thisPasswordWouldAlsoBeEncrypted"));
-		entries.add(new TOTPLogin("superusername", "domain.example", "mysupersecretkey", Arrays.asList("recoverkey1", "recoverykey2")));
-		entries.add(new TOTPLogin("almightlyEmail", "domain.whereami", "myexposedsecretkey", Arrays.asList("recoverkey1")));
-		entries.add(new TOTPLogin("uwu", "domain.site", "myOtherSuperSecretKey", new ArrayList<String>()));
+		entries.add(new TextLogin("myusername", "d0main.site.example", "Sm+K67fwgXuPEfykH1bAH7FFh3QWS2PUa47aGDoU0sM=", 0, 0));
+		entries.add(new TOTPLogin("superusername", "domain.example", "MUnAlMN6vkMTNZSRph906mTb4WMCwjNCYid3Z6bn1K0=", Arrays.asList("qOb/fQ3tFCij/yFskM2WCw==", "RHMurqUClXNT0ChYB6XnQg=="), 0, 0));
+		entries.add(new TOTPLogin("almightlyEmail", "domain.whereami", "QL1zYTwai4S6YOLh8HqSiUE7IWHZLAplOVegJyVQB5I=", Arrays.asList("qOb/fQ3tFCij/yFskM2WCw=="), 0, 0));
+		entries.add(new TOTPLogin("uwu", "domain.site", "lJHGzdgWbIAR96yjCqUI0fjUhACaXo5yEtUBmjEsBkM=", new ArrayList<String>(), 0, 0));
 	}
 	
 	@Test
 	@Order(1)
 	void testFormatEntryForWriting() {
-		assertEquals(DatabaseManager.formatEntryForDatabaseWrite(entries.get(0)), String.format("{username:\"myusername\";domain:\"d0main.site.example\";password:\"thispasswordwouldbeencrypted\";created:%d;lastModified:%d}", entries.get(0).getCreated(), entries.get(0).getLastModified()));
-		assertEquals(DatabaseManager.formatEntryForDatabaseWrite(entries.get(2)), String.format("{username:\"superusername\";domain:\"domain.example\";secret:\"mysupersecretkey\";recovery:[\"recoverkey1\",\"recoverykey2\"];created:%d;lastModified:%d}", entries.get(2).getCreated(), entries.get(2).getLastModified()));
-		assertEquals(DatabaseManager.formatEntryForDatabaseWrite(entries.get(3)), String.format("{username:\"almightlyEmail\";domain:\"domain.whereami\";secret:\"myexposedsecretkey\";recovery:[\"recoverkey1\"];created:%d;lastModified:%d}", entries.get(3).getCreated(), entries.get(3).getLastModified()));
-		assertEquals(DatabaseManager.formatEntryForDatabaseWrite(entries.get(4)), String.format("{username:\"uwu\";domain:\"domain.site\";secret:\"myOtherSuperSecretKey\";recovery:[];created:%d;lastModified:%d}", entries.get(4).getCreated(), entries.get(4).getLastModified()));
+		assertEquals("{username:\"myusername\";domain:\"d0main.site.example\";password:\"Sm+K67fwgXuPEfykH1bAH7FFh3QWS2PUa47aGDoU0sM=\";created:0;lastModified:0}", DatabaseManager.formatEntryForDatabaseWrite(entries.get(0)));
+		assertEquals("{username:\"superusername\";domain:\"domain.example\";secret:\"MUnAlMN6vkMTNZSRph906mTb4WMCwjNCYid3Z6bn1K0=\";recovery:[\"qOb/fQ3tFCij/yFskM2WCw==\",\"RHMurqUClXNT0ChYB6XnQg==\"];created:0;lastModified:0}", DatabaseManager.formatEntryForDatabaseWrite(entries.get(1)));
+		assertEquals("{username:\"almightlyEmail\";domain:\"domain.whereami\";secret:\"QL1zYTwai4S6YOLh8HqSiUE7IWHZLAplOVegJyVQB5I=\";recovery:[\"qOb/fQ3tFCij/yFskM2WCw==\"];created:0;lastModified:0}", DatabaseManager.formatEntryForDatabaseWrite(entries.get(2)));
+		assertEquals("{username:\"uwu\";domain:\"domain.site\";secret:\"lJHGzdgWbIAR96yjCqUI0fjUhACaXo5yEtUBmjEsBkM=\";recovery:[];created:0;lastModified:0}", DatabaseManager.formatEntryForDatabaseWrite(entries.get(3)));
 		assertNull(DatabaseManager.formatEntryForDatabaseWrite(null));
 	}
 	
@@ -56,10 +55,10 @@ public class DatabaseManagerTest {
 	@Order(2)
 	void testExtractEntryFromDatabase() {
 		assertNull(DatabaseManager.extractLoginEntryFromDatabaseEntry(null));
-		assertEquals(DatabaseManager.extractLoginEntryFromDatabaseEntry(String.format("{username:\"myusername\";domain:\"d0main.site.example\";password:\"thispasswordwouldbeencrypted\";created:%d;lastModified:%d}", entries.get(0).getCreated(), entries.get(0).getLastModified())), entries.get(0));
-		assertEquals(DatabaseManager.extractLoginEntryFromDatabaseEntry(String.format("{username:\"superusername\";domain:\"domain.example\";secret:\"mysupersecretkey\";recovery:[\"recoverkey1\",\"recoverykey2\"];created:%d;lastModified:%d}", entries.get(2).getCreated(), entries.get(2).getLastModified())), entries.get(2));
-		assertEquals(DatabaseManager.extractLoginEntryFromDatabaseEntry(String.format("{username:\"almightlyEmail\";domain:\"domain.whereami\";secret:\"myexposedsecretkey\";recovery:[\"recoverkey1\"];created:%d;lastModified:%d}", entries.get(3).getCreated(), entries.get(3).getLastModified())), entries.get(3));
-		assertEquals(DatabaseManager.extractLoginEntryFromDatabaseEntry(String.format("{username:\"uwu\";domain:\"domain.site\";secret:\"myOtherSuperSecretKey\";recovery:[];created:%d;lastModified:%d}", entries.get(4).getCreated(), entries.get(4).getLastModified())), entries.get(4));
+		assertEquals(entries.get(0), DatabaseManager.extractLoginEntryFromDatabaseEntry("{username:\"myusername\";domain:\"d0main.site.example\";password:\"Sm+K67fwgXuPEfykH1bAH7FFh3QWS2PUa47aGDoU0sM=\";created:0;lastModified:0}"));
+		assertEquals(entries.get(1), DatabaseManager.extractLoginEntryFromDatabaseEntry("{username:\"superusername\";domain:\"domain.example\";secret:\"MUnAlMN6vkMTNZSRph906mTb4WMCwjNCYid3Z6bn1K0=\";recovery:[\"qOb/fQ3tFCij/yFskM2WCw==\",\"RHMurqUClXNT0ChYB6XnQg==\"];created:0;lastModified:0}"));
+		assertEquals(entries.get(2), DatabaseManager.extractLoginEntryFromDatabaseEntry("{username:\"almightlyEmail\";domain:\"domain.whereami\";secret:\"QL1zYTwai4S6YOLh8HqSiUE7IWHZLAplOVegJyVQB5I=\";recovery:[\"qOb/fQ3tFCij/yFskM2WCw==\"];created:0;lastModified:0}"));
+		assertEquals(entries.get(3), DatabaseManager.extractLoginEntryFromDatabaseEntry("{username:\"uwu\";domain:\"domain.site\";secret:\"lJHGzdgWbIAR96yjCqUI0fjUhACaXo5yEtUBmjEsBkM=\";recovery:[];created:0;lastModified:0}"));
 	}
 	
 	

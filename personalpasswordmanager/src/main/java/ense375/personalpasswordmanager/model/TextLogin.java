@@ -19,7 +19,7 @@ public class TextLogin extends LoginEntry {
 		return this.password;
 	}
 	
-	public boolean setPassword(String password) {
+	public boolean updatePassword(String password) {
 		this.password = password;
 		return true;
 	}

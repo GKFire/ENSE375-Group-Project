@@ -17,19 +17,24 @@ public class DatabaseManager {
 	
 	private File database;
 	
-	public static final String TEXT_ENTRY_REGEX = "\\{username:\\\"(?<username>\\w+)\\\";domain:\\\"(?<domain>[\\w.]+)\\\";password:\\\"(?<password>\\w+)\\\";created:(?<created>[0-9]+);lastModified:(?<modified>[0-9]+)\\}";
+	public static final String TEXT_ENTRY_REGEX = "\\{username:\\\"(?<username>\\w+)\\\";domain:\\\"(?<domain>[\\w.]+)\\\";password:\\\"(?<password>[A-Za-z0-9+/]+=*)\\\";created:(?<created>[0-9]+);lastModified:(?<modified>[0-9]+)\\}";
 	public static final String TEXT_ENTRY_FORMAT = "{username:\"%s\";domain:\"%s\";password:\"%s\";created:%d;lastModified:%d}";
 	
-	public static final String TOTP_ENTRY_REGEX = "\\{username:\\\"(?<username>\\w+)\\\";domain:\\\"(?<domain>[\\w.]+)\\\";secret:\\\"(?<secret>\\w+)\\\";recovery:\\[(?<recovery>(?:\\\"\\w*\\\",)*(?:\\\"\\w*\\\"))?\\];created:(?<created>[0-9]+);lastModified:(?<modified>[0-9]+)\\}";
+	public static final String TOTP_ENTRY_REGEX = "\\{username:\\\"(?<username>\\w+)\\\";domain:\\\"(?<domain>[\\w.]+)\\\";secret:\\\"(?<secret>[A-Za-z0-9+/]+=*)\\\";recovery:\\[(?<recovery>(?:\\\"[A-Za-z0-9+/]+=*\\\",)*(?:\\\"[A-Za-z0-9+/]+=*\\\"))?\\];created:(?<created>[0-9]+);lastModified:(?<modified>[0-9]+)\\}";
 	public static final String TOTP_ENTRY_FORMAT = "{username:\"%s\";domain:\"%s\";secret:\"%s\";recovery:[%s];created:%d;lastModified:%d}";
 	
 	public DatabaseManager(Path datafile) {
 		this.database = datafile.toAbsolutePath().toFile();
 	}
 	
+	public boolean databaseExists() {
+		return database.exists();
+	}
+	
 	public boolean validateKey(PrimaryKey key) {
 		if (key == null) return false;
 		try {
+			if (!database.exists()) database.createNewFile();
 			BufferedReader reader = new BufferedReader(new FileReader(database));
 			String entry = reader.readLine();
 			reader.close();
@@ -49,6 +54,7 @@ public class DatabaseManager {
 		if (key == null) return null;
 		ArrayList<String> database_buffer = new ArrayList<String>();
 		try {
+			if (!database.exists()) database.createNewFile();
 			BufferedReader reader = new BufferedReader(new FileReader(database));
 			String entry;
 			while ((entry = reader.readLine()) != null) database_buffer.add(entry);
