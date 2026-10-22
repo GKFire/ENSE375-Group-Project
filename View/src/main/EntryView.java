@@ -1,0 +1,212 @@
+package ense375.personalpasswordmanager.view;
+
+import ense375.personalpasswordmanager.model.LoginEntry;
+import ense375.personalpasswordmanager.presenter.ProgramPresenter;
+
+import java.io.PrintStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Scanner;
+
+//To create a EntryView
+
+public class EntryView {
+    private final ProgramPresenter presenter;
+    private final Scanner scanner;
+    private final PrintStream out;
+
+    //Creates an EntryView that uses the real console.
+    
+    public EntryView(ProgramPresenter presenter) 
+    {
+        this(presenter, new Scanner(System.in), System.out);
+    }
+
+    //Creates an EntryView with injected input and output.
+    
+    public EntryView(ProgramPresenter presenter, Scanner scanner, PrintStream out) 
+    {
+        this.presenter = presenter;
+        this.scanner = scanner;
+        this.out = out;
+    }
+
+    // Helps the user through creating a new login.
+    
+    public void createNewLogin() {
+        out.println();
+        out.println("1. Text login (username and password)");
+        out.println("2. TOTP login (authenticator app)");
+        out.println("0. Cancel");
+        String type = promptUserInput("Type: ");
+
+        if (!type.equals("1") && !type.equals("2")) 
+        {
+            out.println("Cancelled.");
+            return;
+        }
+
+       
+        String username = promptUserInput("Username: ");
+        String website = promptUserInput("Website: ");
+
+        
+        if (username.isEmpty() || website.isEmpty()) 
+        {
+            out.println("Username and website are required.");
+            return;
+        }
+
+        LoginEntry entry;
+        if (type.equals("1")) 
+        {
+            // Text login: needs a password.
+            String password = promptUserInput("Password: ");
+            if (password.isEmpty()) 
+            {
+                out.println("The password cannot be empty.");
+                return;
+            }
+            entry = presenter.createNewTextLogin(username, password, website);
+        } 
+        else 
+        {
+            // TOTP login: needs the shared secret, recovery keys are optional.
+            String secretKey = promptUserInput("Secret key (Base32): ");
+            if (secretKey.isEmpty()) 
+            {
+                out.println("The secret key cannot be empty.");
+                return;
+            }
+
+            List<String> recoveryKeys = parseRecoveryKeys(
+                    promptUserInput("Recovery keys, comma separated (optional): "));
+            entry = presenter.createNewTOTPLogin(username, secretKey, website, recoveryKeys);
+        }
+
+       
+        if (entry == null) 
+        {
+            out.println("Could not create the login.");
+            return;
+        }
+        out.println("Login created.");
+
+
+        if (type.equals("2")) 
+        {
+            out.println("Current OTP: " + presenter.getOneTimePassword(entry));
+        }
+    }
+
+    //Prints all the login fields
+    
+    public void showLoginEntry(int entryId) 
+    {
+        Map<String, String> login = presenter.getLogin(entryId);
+        if (login == null || login.isEmpty()) {
+            out.println("Login not found.");
+            return;
+        }
+
+        // Only ask about revealing if there is actually something secret to hide.
+        boolean reveal = false;
+        if (hasSecretField(login)) 
+        {
+            reveal = promptUserInput("Reveal secret fields? (y/n): ").equalsIgnoreCase("y");
+        }
+
+        out.println();
+        for (Map.Entry<String, String> field : login.entrySet()) 
+        {
+            String value = isSecretField(field.getKey()) && !reveal ? "********" : field.getValue();
+            out.printf(" %-16s %s%n", field.getKey() + ":", value);
+        }
+    }
+
+    //To edit existing login details 
+    public boolean editExistingLogin(int entryId) {
+        out.println("Leave a field empty to keep it unchanged.");
+        String username = promptUserInput("New username: ");
+        String website = promptUserInput("New website: ");
+        String password = promptUserInput("New password: ");
+
+        // Collect only the fields the user actually typed something into.
+        Map<String, String> changes = new HashMap<>();
+        if (!username.isEmpty()) changes.put("username", username);
+        if (!website.isEmpty()) changes.put("website", website);
+        if (!password.isEmpty()) changes.put("password", password);
+
+        if (changes.isEmpty()) 
+        {
+            out.println("Nothing changed.");
+            return false;
+        }
+        boolean edited = presenter.editExistingLogin(entryId, changes);
+        out.println(edited ? "Login updated." : "Could not update the login.");
+        return edited;
+    }
+
+    //To delete the login entry 
+    public boolean deleteLoginEntry(int entryId) 
+    {
+        String confirm = promptUserInput("Type 'yes' to delete this credential permanently: ");
+        if (!confirm.equalsIgnoreCase("yes")) 
+        {
+            out.println("Cancelled.");
+            return false;
+        }
+        
+        boolean deleted = presenter.deleteLogin(entryId);
+        out.println(deleted ? "Login deleted." : "Could not delete the login.");
+        return deleted;
+    }
+
+    // Prints a prompt and reads one line of input.
+   
+    public String promptUserInput(String prompt) 
+    {
+        out.print(prompt);
+        out.flush(); 
+        return scanner.hasNextLine() ? scanner.nextLine().trim() : "";
+    }
+
+    //Splits a comma-separated line into a list of recovery keys
+     
+    private List<String> parseRecoveryKeys(String line) 
+    {
+        List<String> keys = new ArrayList<>();
+        
+        for (String key : line.split(",")) 
+        {
+            if (!key.trim().isEmpty()) 
+            {
+                keys.add(key.trim());
+            }
+        }
+        return keys;
+    }
+
+    //returns true if a field with this name holds a secret that should be hidden 
+    private boolean isSecretField(String name) 
+    {
+        return name.equalsIgnoreCase("password")
+                || name.equalsIgnoreCase("secret_key")
+                || name.equalsIgnoreCase("secret key");
+    }
+
+    //returns true if at least one field of the login is a secret
+    private boolean hasSecretField(Map<String, String> login) 
+    {
+        for (String name : login.keySet()) 
+        {
+            if (isSecretField(name)) 
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+}
