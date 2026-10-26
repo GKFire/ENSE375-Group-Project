@@ -1,9 +1,9 @@
 package ense375.personalpasswordmanager.view;
 
-import ense375.personalpasswordmanager.presenter.ProgramPresenter;
-
 import java.io.PrintStream;
 import java.util.Scanner;
+
+import ense375.personalpasswordmanager.ProgramPresenter;
 
 //AuthView: the login screen.
 
@@ -44,7 +44,7 @@ public class AuthView {
                 continue;
             }
 
-            if (presenter.initDatabase(key)) {
+            if (presenter.initDatabase(key) && presenter.readDatabase()) {
                 out.println("Database ready.");
                 return true;
             }

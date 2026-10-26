@@ -1,10 +1,10 @@
 package ense375.personalpasswordmanager.view;
 
-import ense375.personalpasswordmanager.presenter.ProgramPresenter;
-
 import java.io.PrintStream;
-import java.util.Map;
+import java.util.List;
 import java.util.Scanner;
+
+import ense375.personalpasswordmanager.ProgramPresenter;
 
 //ListView: the main screen, shown after a successful login.
 
@@ -46,10 +46,10 @@ public class ListView {
         while (running) 
         {
             printLogins(presenter.getLogins());
-            out.println("ID = open   N = new login   0 = save and exit");
+            out.println("ID = open   N = new login   Q = save and exit");
 
             String input = promptUserInput("Choose: ");
-            if (input.equals("0") || inputClosed) 
+            if (input.equalsIgnoreCase("Q") || inputClosed) 
             {
                 out.println(presenter.saveToDatabase()
                         ? "Saved. Goodbye."
@@ -69,7 +69,7 @@ public class ListView {
 
     // Prints the list of logins as "id. description" lines.
      
-    private void printLogins(Map<String, String> logins) 
+    private void printLogins(List<String> logins) 
     {
         out.println();
         out.println("---------CREDENTIALS ---------");
@@ -79,10 +79,8 @@ public class ListView {
         } 
         else 
         {
-            for (Map.Entry<String, String> login : logins.entrySet()) 
-            {
-                out.printf(" %s. %s%n", login.getKey(), login.getValue());
-            }
+        	for (int i = 0; i < logins.size(); i++)
+        		out.printf("ID=%d: %s\n", i, logins.get(i));
         }
         out.println("------------------");
     }
@@ -103,9 +101,9 @@ public class ListView {
         }
 
         // The id must belong to an existing entry.
-        Map<String, String> logins = presenter.getLogins();
+        List<String> logins = presenter.getLogins();
 
-        if (logins == null || !logins.containsKey(String.valueOf(entryId))) 
+        if (logins == null || presenter.getLogin(entryId) == null) 
         {
             out.println("No login with that ID.");
             return;

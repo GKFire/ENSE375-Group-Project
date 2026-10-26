@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
+import java.util.regex.Pattern;
 
 import ense375.personalpasswordmanager.model.DatabaseManager;
 import ense375.personalpasswordmanager.model.LoginEntry;
@@ -16,6 +16,14 @@ import ense375.personalpasswordmanager.model.TextLogin;
 import ense375.personalpasswordmanager.utils.HMACUtil;
 
 public class ProgramPresenter {
+	
+	public static final String USERNAME_REGEX = "[a-zA-Z0-9_]+";
+	public static final String DOMAIN_REGEX = "[a-z0-9]+(?:\\.[a-z0-9]+)+";
+	public static final String EMAIL_REGEX = "[a-z0-9.]+@".concat(DOMAIN_REGEX);
+	public static final String BASE64_REGEX = "[0-9A-Z+/]+=*";
+	public static final String RECOVERY_KEY_REGEX = "[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*";
+	
+	
 	
 	public static final String USERNAME = "username";
 	public static final String DOMAIN = "domain";
@@ -30,8 +38,8 @@ public class ProgramPresenter {
 	
 	
 	
-	private List<LoginEntry> logins;
-	private DatabaseManager database;
+	protected List<LoginEntry> logins;
+	protected DatabaseManager database;
 	private PrimaryKey key;
 
 	public ProgramPresenter() {
@@ -61,7 +69,6 @@ public class ProgramPresenter {
 	}
 	
 	public boolean saveToDatabase() {
-		if (logins == null) return database.writeDatabase(new ArrayList<LoginEntry>(), key);
 		return database.writeDatabase(logins, key);
 	}
 	
@@ -71,11 +78,11 @@ public class ProgramPresenter {
 		return true;
 	}
 	
-	public Map<String, String> getLogins() {
+	public List<String> getLogins() {
 		if (logins == null) return null;
-		TreeMap<String, String> map = new TreeMap<String, String>();
-		logins.forEach(entry -> map.put(entry.getWebsiteDomain(), String.format("%s:\"%s\";%s:\"%s\"", USERNAME, entry.getUsername(), TYPE, (entry instanceof TOTPLogin ? "TOTP Login" : "Text Login"))));
-		return map;
+		List<String> list = new ArrayList<String>();
+		logins.forEach(entry -> list.add(String.format("%s: \"%s\"; %s: \"%s\"; %s: \"%s\"", USERNAME, entry.getUsername(), DOMAIN, entry.getWebsiteDomain(), TYPE, (entry instanceof TOTPLogin ? "TOTP Login" : "Text Login"))));
+		return list;
 	}
 	
 	public Map<String, String> getLogin(int entry_id) {
@@ -107,14 +114,21 @@ public class ProgramPresenter {
 		return output;
 	}
 	
-	public Map<String, String> createNewTextLogin(String username, String password, String website) {
-		logins.add(new TextLogin(username, website, key.encrypt(password)));
-		return getLogin(logins.size() - 1);
+	public int createNewTextLogin(String username, String password, String website) {
+		if (!validUsernameOrEmail(username)) return -1;
+		if (!validDomain(website)) return -1;
+		if (!validPassword(password)) return -1;
+		if (logins.add(new TextLogin(username, website, key.encrypt(password)))) return logins.size() - 1;
+		return -1;
 	}
 	
-	public Map<String, String> createNewTOTPLogin(String username, String secret_key, String website, List<String> recovery_keys) {
-		logins.add(new TOTPLogin(username, website, key.encrypt(secret_key), recovery_keys.stream().map(recovery_key -> key.encrypt(recovery_key)).toList()));
-		return getLogin(logins.size() - 1);
+	public int createNewTOTPLogin(String username, String secret_key, String website, List<String> recovery_keys) {
+		if (!validUsernameOrEmail(username)) return -1;
+		if (!validDomain(website)) return -1;
+		if (!validBase64(secret_key)) return -1;
+		for (String recovery_key : recovery_keys) if (!validRecoveryKey(recovery_key)) return -1;
+		if (logins.add(new TOTPLogin(username, website, key.encrypt(secret_key), recovery_keys.stream().map(recovery_key -> key.encrypt(recovery_key)).toList()))) return logins.size() - 1;
+		return -1;
 	}
 	
 	public boolean deleteLogin(int entry_id) {
@@ -148,8 +162,33 @@ public class ProgramPresenter {
 			TOTPLogin totp = (TOTPLogin) entry;
 			
 			int code = HMACUtil.HOTP_SHA_1(key.decrypt(totp.getKey()), Instant.now().getEpochSecond() / 30, 6);
-			return String.format("$03%d-$03%d", code / 1000, code % 1000);
+			return String.format("%03d-%03d", code / 1000, code % 1000);
 		} else return null;
+	}
+	
+	public static boolean validPassword(String password) {
+		if (password == null) return false;
+		if (password.length() <= 7) return false;
+		if (!password.matches("[0-9]")) return false;
+		if (!password.matches("[A-Z]")) return false;
+		if (!password.matches("[+#$%@!%^&*{}.,<>;:/()=]")) return false;
+		return true;
+	}
+	
+	public static boolean validDomain(String domain) {
+		return Pattern.matches(DOMAIN_REGEX, domain);
+	}
+	
+	public static boolean validUsernameOrEmail(String input) {
+		return Pattern.matches(USERNAME_REGEX, input) || Pattern.matches(EMAIL_REGEX, input);
+	}
+	
+	public static boolean validBase64(String input) {
+		return Pattern.matches(BASE64_REGEX, input);
+	}
+	
+	public static boolean validRecoveryKey(String input) {
+		return Pattern.matches(RECOVERY_KEY_REGEX, input);
 	}
 	
 }

@@ -52,7 +52,7 @@ public class DatabaseManagerTest {
 	}
 	
 	@Test
-	@Order(2)
+	@Order(1)
 	void testExtractEntryFromDatabase() {
 		assertNull(DatabaseManager.extractLoginEntryFromDatabaseEntry(null));
 		assertEquals(entries.get(0), DatabaseManager.extractLoginEntryFromDatabaseEntry("{username:\"myusername\";domain:\"d0main.site.example\";password:\"Sm+K67fwgXuPEfykH1bAH7FFh3QWS2PUa47aGDoU0sM=\";created:0;lastModified:0}"));
@@ -60,7 +60,6 @@ public class DatabaseManagerTest {
 		assertEquals(entries.get(2), DatabaseManager.extractLoginEntryFromDatabaseEntry("{username:\"almightlyEmail\";domain:\"domain.whereami\";secret:\"QL1zYTwai4S6YOLh8HqSiUE7IWHZLAplOVegJyVQB5I=\";recovery:[\"qOb/fQ3tFCij/yFskM2WCw==\"];created:0;lastModified:0}"));
 		assertEquals(entries.get(3), DatabaseManager.extractLoginEntryFromDatabaseEntry("{username:\"uwu\";domain:\"domain.site\";secret:\"lJHGzdgWbIAR96yjCqUI0fjUhACaXo5yEtUBmjEsBkM=\";recovery:[];created:0;lastModified:0}"));
 	}
-	
 	
 	@Test
 	@Order(3)

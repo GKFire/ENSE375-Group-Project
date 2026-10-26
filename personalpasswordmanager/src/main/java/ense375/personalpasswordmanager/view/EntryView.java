@@ -1,14 +1,13 @@
 package ense375.personalpasswordmanager.view;
 
-import ense375.personalpasswordmanager.model.LoginEntry;
-import ense375.personalpasswordmanager.presenter.ProgramPresenter;
-
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+
+import ense375.personalpasswordmanager.ProgramPresenter;
 
 //To create a EntryView
 
@@ -59,7 +58,7 @@ public class EntryView {
             return;
         }
 
-        LoginEntry entry;
+        int entry;
         if (type.equals("1")) 
         {
             // Text login: needs a password.
@@ -70,7 +69,7 @@ public class EntryView {
                 return;
             }
             entry = presenter.createNewTextLogin(username, password, website);
-        } 
+        }
         else 
         {
             // TOTP login: needs the shared secret, recovery keys are optional.
@@ -87,7 +86,7 @@ public class EntryView {
         }
 
        
-        if (entry == null) 
+        if (entry == -1) 
         {
             out.println("Could not create the login.");
             return;
@@ -128,16 +127,18 @@ public class EntryView {
 
     //To edit existing login details 
     public boolean editExistingLogin(int entryId) {
+    	
+    	Map<String, String> entry = presenter.getLogin(entryId);
+    	
+    	Map<String, String> changes = new HashMap<String, String>();
+    	
         out.println("Leave a field empty to keep it unchanged.");
         String username = promptUserInput("New username: ");
-        String website = promptUserInput("New website: ");
-        String password = promptUserInput("New password: ");
-
-        // Collect only the fields the user actually typed something into.
-        Map<String, String> changes = new HashMap<>();
-        if (!username.isEmpty()) changes.put("username", username);
-        if (!website.isEmpty()) changes.put("website", website);
-        if (!password.isEmpty()) changes.put("password", password);
+        if (!username.isEmpty()) changes.put(ProgramPresenter.USERNAME, username);
+        if (entry.get(ProgramPresenter.TYPE).equals(ProgramPresenter.TEXT_TYPE)) {
+        	String password = promptUserInput("New password: ");
+        	if (!password.isEmpty()) changes.put("password", password);
+        }
 
         if (changes.isEmpty()) 
         {
@@ -192,9 +193,8 @@ public class EntryView {
     //returns true if a field with this name holds a secret that should be hidden 
     private boolean isSecretField(String name) 
     {
-        return name.equalsIgnoreCase("password")
-                || name.equalsIgnoreCase("secret_key")
-                || name.equalsIgnoreCase("secret key");
+        return name.equalsIgnoreCase(ProgramPresenter.PASSWORD)
+                || name.equalsIgnoreCase(ProgramPresenter.RECOVERY_KEY_PREFIX);
     }
 
     //returns true if at least one field of the login is a secret

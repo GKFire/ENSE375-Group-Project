@@ -22,6 +22,7 @@ public class HMACUtil {
 	}
 
 	public static byte[] HMAC_SHA_1(String key, long offset) {
+		BYTE_BUFFER.clear();
 		try {
 			byte[] buffer_key = convertStringKey(key);
 			byte[] buffer_inside = new byte[KEY_LENGTH];

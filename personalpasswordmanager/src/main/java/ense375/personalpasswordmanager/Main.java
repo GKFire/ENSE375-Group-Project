@@ -1,8 +1,5 @@
 package ense375.personalpasswordmanager;
 
-import ense375.personalpasswordmanager.presenter.ProgramPresenter;
-import ense375.personalpasswordmanager.view.ProgramView;
-
 // Entry point of the Personal Password Manager.
 
 public class Main {
@@ -13,7 +10,6 @@ public class Main {
         ProgramPresenter presenter = new ProgramPresenter();
         ProgramView view = new ProgramView(presenter);
 
-        view.init(); 
         view.run();  
     }
 }

@@ -1,9 +1,10 @@
-package ense375.personalpasswordmanager.view;
-
-import ense375.personalpasswordmanager.presenter.ProgramPresenter;
+package ense375.personalpasswordmanager;
 
 import java.io.PrintStream;
 import java.util.Scanner;
+
+import ense375.personalpasswordmanager.view.AuthView;
+import ense375.personalpasswordmanager.view.ListView;
 
 //ProgramView: the top of the view layer.
 

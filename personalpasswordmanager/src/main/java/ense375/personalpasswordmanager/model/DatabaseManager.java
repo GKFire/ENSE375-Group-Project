@@ -20,11 +20,12 @@ public class DatabaseManager {
 	public static final String TEXT_ENTRY_REGEX = "\\{username:\\\"(?<username>\\w+)\\\";domain:\\\"(?<domain>[\\w.]+)\\\";password:\\\"(?<password>[A-Za-z0-9+/]+=*)\\\";created:(?<created>[0-9]+);lastModified:(?<modified>[0-9]+)\\}";
 	public static final String TEXT_ENTRY_FORMAT = "{username:\"%s\";domain:\"%s\";password:\"%s\";created:%d;lastModified:%d}";
 	
-	public static final String TOTP_ENTRY_REGEX = "\\{username:\\\"(?<username>\\w+)\\\";domain:\\\"(?<domain>[\\w.]+)\\\";secret:\\\"(?<secret>[A-Za-z0-9+/]+=*)\\\";recovery:\\[(?<recovery>(?:\\\"[A-Za-z0-9+/]+=*\\\",)*(?:\\\"[A-Za-z0-9+/]+=*\\\"))?\\];created:(?<created>[0-9]+);lastModified:(?<modified>[0-9]+)\\}";
+	public static final String TOTP_ENTRY_REGEX = "\\{username:\\\"(?<username>\\w+)\\\";domain:\\\"(?<domain>[\\w.]+)\\\";secret:\\\"(?<secret>[A-Za-z0-9+/]+=*)\\\";recovery:\\[(?<recovery>(?:\\\"[A-Za-z0-9+/-]+=*\\\",)*(?:\\\"[A-Za-z0-9+/]+=*\\\"))?\\];created:(?<created>[0-9]+);lastModified:(?<modified>[0-9]+)\\}";
 	public static final String TOTP_ENTRY_FORMAT = "{username:\"%s\";domain:\"%s\";secret:\"%s\";recovery:[%s];created:%d;lastModified:%d}";
 	
 	public DatabaseManager(Path datafile) {
 		this.database = datafile.toAbsolutePath().toFile();
+		if (!database.getParentFile().exists()) database.getParentFile().mkdirs();
 	}
 	
 	public boolean databaseExists() {

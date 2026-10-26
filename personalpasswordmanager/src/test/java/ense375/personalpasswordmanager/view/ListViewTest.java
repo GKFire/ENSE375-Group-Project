@@ -1,21 +1,22 @@
 package ense375.personalpasswordmanager.view;
 
-import ense375.personalpasswordmanager.presenter.ProgramPresenter;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTimeoutPreemptively;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Scanner;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTimeoutPreemptively;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import ense375.personalpasswordmanager.ProgramPresenter;
+import ense375.personalpasswordmanager.model.LoginEntry;
+import ense375.personalpasswordmanager.model.TextLogin;
 
 //Tests for ListView
 class ListViewTest {
@@ -53,7 +54,7 @@ class ListViewTest {
 
     private ByteArrayOutputStream output;
     private PrintStream out;
-    private Map<String, String> logins;
+    private List<LoginEntry> logins;
     private boolean saveResult;
     private int saveCalls;
     private RecordingEntryView entryView;
@@ -64,17 +65,12 @@ class ListViewTest {
     {
         output = new ByteArrayOutputStream();
         out = new PrintStream(output);
-        logins = new LinkedHashMap<>();
-        logins.put("1", "alice - example.com");
+        logins = new ArrayList<LoginEntry>();
+        logins.add(new TextLogin("alice", "website.com", "password"));
         saveResult = true;
         saveCalls = 0;
         presenter = new ProgramPresenter() 
         {
-            @Override
-            public Map<String, String> getLogins() 
-            {
-                return logins;
-            }
 
             @Override
             public boolean saveToDatabase() 
@@ -133,7 +129,7 @@ class ListViewTest {
     @Test
     void listLogins_unknownIdOrTextOpensNothing() 
     {
-        viewWithInput("99\nabc\n0\n").listLogins()
+        viewWithInput("99\nabc\n0\n").listLogins();
         assertTrue(entryView.calls.isEmpty());
         assertTrue(printed().contains("No login with that ID"));
         assertTrue(printed().contains("Unknown option"));

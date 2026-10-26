@@ -1,8 +1,7 @@
-package ense375.personalpasswordmanager.view;
+package ense375.personalpasswordmanager;
 
-import ense375.personalpasswordmanager.presenter.ProgramPresenter;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
@@ -10,8 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import ense375.personalpasswordmanager.view.AuthView;
+import ense375.personalpasswordmanager.view.ListView;
 
 //Tests for ProgramView
 class ProgramViewTest {
