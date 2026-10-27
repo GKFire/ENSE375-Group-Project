@@ -18,9 +18,9 @@ import ense375.personalpasswordmanager.utils.HMACUtil;
 public class ProgramPresenter {
 	
 	public static final String USERNAME_REGEX = "[a-zA-Z0-9_]+";
-	public static final String DOMAIN_REGEX = "[a-z0-9]+(?:\\.[a-z0-9]+)+";
-	public static final String EMAIL_REGEX = "[a-z0-9.]+@".concat(DOMAIN_REGEX);
-	public static final String BASE64_REGEX = "[0-9A-Z+/]+=*";
+	public static final String DOMAIN_REGEX = "[A-Za-z0-9]{2,}(?:\\.[A-Za-z0-9]{2,})+";
+	public static final String EMAIL_REGEX = "[A-Za-z0-9._+\\-]+@".concat(DOMAIN_REGEX);
+	public static final String BASE64_REGEX = "[0-9a-zA-Z+/]+=*";
 	public static final String RECOVERY_KEY_REGEX = "[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*";
 	
 	
@@ -58,6 +58,10 @@ public class ProgramPresenter {
 		key = null;
 	}
 	
+	private boolean databaseInitialized() {
+		return key != null;
+	}
+	
 	public boolean initDatabase(String user_password) {
 		if (user_password == null) return false;
 		if (user_password.equals("")) return false;
@@ -69,24 +73,27 @@ public class ProgramPresenter {
 	}
 	
 	public boolean saveToDatabase() {
+		if (!databaseInitialized()) return false;
 		return database.writeDatabase(logins, key);
 	}
 	
 	public boolean readDatabase() {
-		logins = database.readDatabase(key);
+		if (!databaseInitialized()) return false;
+		List<LoginEntry> logins = database.readDatabase(key);
 		if (logins == null) return false;
+		this.logins = logins;
 		return true;
 	}
 	
 	public List<String> getLogins() {
-		if (logins == null) return null;
+		if (!databaseInitialized()) return null;
 		List<String> list = new ArrayList<String>();
 		logins.forEach(entry -> list.add(String.format("%s: \"%s\"; %s: \"%s\"; %s: \"%s\"", USERNAME, entry.getUsername(), DOMAIN, entry.getWebsiteDomain(), TYPE, (entry instanceof TOTPLogin ? "TOTP Login" : "Text Login"))));
 		return list;
 	}
 	
 	public Map<String, String> getLogin(int entry_id) {
-		if (logins == null) return null;
+		if (!databaseInitialized()) return null;
 		if (entry_id < 0 || entry_id >= logins.size()) return null;
 		
 		HashMap<String, String> output = new HashMap<String, String>();
@@ -115,35 +122,41 @@ public class ProgramPresenter {
 	}
 	
 	public int createNewTextLogin(String username, String password, String website) {
+		if (!databaseInitialized()) return -1;
 		if (!validUsernameOrEmail(username)) return -1;
 		if (!validDomain(website)) return -1;
 		if (!validPassword(password)) return -1;
-		if (logins.add(new TextLogin(username, website, key.encrypt(password)))) return logins.size() - 1;
+		if (logins.add(new TextLogin(username.toLowerCase(), website, key.encrypt(password)))) return logins.size() - 1;
 		return -1;
 	}
 	
 	public int createNewTOTPLogin(String username, String secret_key, String website, List<String> recovery_keys) {
+		if (!databaseInitialized()) return -1;
 		if (!validUsernameOrEmail(username)) return -1;
 		if (!validDomain(website)) return -1;
 		if (!validBase64(secret_key)) return -1;
+		if (recovery_keys == null) return -1;
 		for (String recovery_key : recovery_keys) if (!validRecoveryKey(recovery_key)) return -1;
-		if (logins.add(new TOTPLogin(username, website, key.encrypt(secret_key), recovery_keys.stream().map(recovery_key -> key.encrypt(recovery_key)).toList()))) return logins.size() - 1;
+		if (logins.add(new TOTPLogin(username.toLowerCase(), website, key.encrypt(secret_key), recovery_keys.stream().map(recovery_key -> key.encrypt(recovery_key)).toList()))) return logins.size() - 1;
 		return -1;
 	}
 	
 	public boolean deleteLogin(int entry_id) {
+		if (!databaseInitialized()) return false;
 		if (entry_id < 0 || entry_id >= logins.size()) return false;
 		logins.remove(entry_id);
 		return saveToDatabase();
 	}
 	
 	public boolean editExistingLogin(int entry_id, Map<String, String> changes) {
+		if (!databaseInitialized()) return false;
 		if (entry_id < 0 || entry_id >= logins.size()) return false;
 		
 		LoginEntry entry = logins.get(entry_id);
 		if (changes.containsKey(USERNAME)) entry.updateUsername(changes.get(USERNAME));
-		if (changes.containsKey(PASSWORD)) ((TextLogin) entry).updatePassword(key.encrypt(changes.get(PASSWORD)));
-		else {
+		if (entry instanceof TextLogin)
+			if (changes.containsKey(PASSWORD)) ((TextLogin) entry).updatePassword(key.encrypt(changes.get(PASSWORD)));
+		if (entry instanceof TOTPLogin) {
 			List<String> recovery_keys = new ArrayList<String>();
 			int i = 0;
 			while (changes.containsKey(RECOVERY_KEY_PREFIX.concat(String.valueOf(i)))) {
@@ -157,6 +170,9 @@ public class ProgramPresenter {
 	
 	
 	public String getOneTimePassword(int entry_id) {
+		if (!databaseInitialized()) return null;
+		if (entry_id < 0 || entry_id >= logins.size()) return null;
+		
 		LoginEntry entry = logins.get(entry_id);
 		if (entry instanceof TOTPLogin) {
 			TOTPLogin totp = (TOTPLogin) entry;
@@ -169,25 +185,29 @@ public class ProgramPresenter {
 	public static boolean validPassword(String password) {
 		if (password == null) return false;
 		if (password.length() <= 7) return false;
-		if (!password.matches("[0-9]")) return false;
-		if (!password.matches("[A-Z]")) return false;
-		if (!password.matches("[+#$%@!%^&*{}.,<>;:/()=]")) return false;
+		if (!Pattern.compile("[0-9]").matcher(password).find()) return false;
+		if (!Pattern.compile("[A-Z]").matcher(password).find()) return false;
+		if (!Pattern.compile("[+#$%@!%^&*{}.,<>;:/()=]").matcher(password).find()) return false;
 		return true;
 	}
 	
 	public static boolean validDomain(String domain) {
+		if (domain == null) return false;
 		return Pattern.matches(DOMAIN_REGEX, domain);
 	}
 	
 	public static boolean validUsernameOrEmail(String input) {
+		if (input == null) return false;
 		return Pattern.matches(USERNAME_REGEX, input) || Pattern.matches(EMAIL_REGEX, input);
 	}
 	
 	public static boolean validBase64(String input) {
+		if (input == null) return false;
 		return Pattern.matches(BASE64_REGEX, input);
 	}
 	
 	public static boolean validRecoveryKey(String input) {
+		if (input == null) return false;
 		return Pattern.matches(RECOVERY_KEY_REGEX, input);
 	}
 	
