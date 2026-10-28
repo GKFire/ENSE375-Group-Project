@@ -98,7 +98,7 @@ class ProgramViewTest {
             }
         };
 
-        new ProgramView(real, new Scanner("secret123\n0\n"), out).run();
+        new ProgramView(real, new Scanner("secret123\nQ\n"), out).run();
         assertEquals(List.of("saved"), saved);
     }
 }

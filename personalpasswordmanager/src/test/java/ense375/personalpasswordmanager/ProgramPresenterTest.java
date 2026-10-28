@@ -54,7 +54,7 @@ public class ProgramPresenterTest {
 		assertFalse(presenter.initDatabase("myotherpassword"));
 		
 		ProgramPresenterInstance presenter_other = new ProgramPresenterInstance();
-		// assertFalse(presenter_other.initDatabase("myotherpassword"));
+		assertFalse(presenter_other.initDatabase("myotherpassword"));
 		assertTrue(presenter_other.initDatabase("mypassword"));
 	}
 	

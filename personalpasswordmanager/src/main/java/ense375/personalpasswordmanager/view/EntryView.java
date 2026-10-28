@@ -47,7 +47,6 @@ public class EntryView {
             return;
         }
 
-       
         String username = promptUserInput("Username: ");
         String website = promptUserInput("Website: ");
 
@@ -78,6 +77,10 @@ public class EntryView {
             {
                 out.println("The secret key cannot be empty.");
                 return;
+            }
+            if (!ProgramPresenter.validBase32(secretKey)) {
+            	out.println("The secret key must be of Base32 format.");
+            	return;
             }
 
             List<String> recoveryKeys = parseRecoveryKeys(
@@ -133,12 +136,59 @@ public class EntryView {
     	Map<String, String> changes = new HashMap<String, String>();
     	
         out.println("Leave a field empty to keep it unchanged.");
-        String username = promptUserInput("New username: ");
+        
+        // --- Korbin's addition ---
+        
+        String username;
+        do {
+        	username = promptUserInput("New username/email (no spaces, '_' '-' '+' allowed in username): ");
+        } while (!username.isBlank() && !ProgramPresenter.validUsernameOrEmail(username));
         if (!username.isEmpty()) changes.put(ProgramPresenter.USERNAME, username);
+        
+        
         if (entry.get(ProgramPresenter.TYPE).equals(ProgramPresenter.TEXT_TYPE)) {
-        	String password = promptUserInput("New password: ");
+        	String password;
+        	do {
+        		password = promptUserInput("New password (min: 8 length, 1 upper-case, 1 special, 1 digit): ");
+        	} while (!password.isBlank() && !ProgramPresenter.validPassword(password));
         	if (!password.isEmpty()) changes.put("password", password);
+        	
+        } else {
+        	List<String> current_recovery_keys = new ArrayList<String>();
+        	int recov_key_index = 0;
+        	while (entry.containsKey(ProgramPresenter.RECOVERY_KEY_PREFIX + String.valueOf(recov_key_index)))
+        		current_recovery_keys.add(entry.get(ProgramPresenter.RECOVERY_KEY_PREFIX + String.valueOf(recov_key_index++)));
+        	
+        	out.println("For Existing Recovery Keys, type '-' if you want to remove the recovery key, enter in a new recovery key to replace, or leave blank to skip");
+        	recov_key_index = 0;
+        	
+        	for (String recovery_key : current_recovery_keys) {
+        		String recov_choice = promptUserInput(String.format("What do you want to do with '%s'? ", recovery_key));
+        		
+        		if (recov_choice.isBlank()) {
+        			changes.put(ProgramPresenter.RECOVERY_KEY_PREFIX + String.valueOf(recov_key_index++), recovery_key);
+        			continue;
+        		}
+        		if (recov_choice.trim().equals("-")) continue;
+        		
+        		if (ProgramPresenter.validRecoveryKey(recov_choice)) {
+        			changes.put(ProgramPresenter.RECOVERY_KEY_PREFIX + String.valueOf(recov_key_index++), recov_choice);
+        		} else {
+        			out.println("invalid choice, skipping this recovery key...");
+        			changes.put(ProgramPresenter.RECOVERY_KEY_PREFIX + String.valueOf(recov_key_index++), recovery_key);
+        		}
+        	}
+        	
+        	String recovery_key;
+        	do {
+        		recovery_key = promptUserInput("New recovery key (leave blank to finish): ");
+        		if (!recovery_key.isBlank()) {
+        			if (ProgramPresenter.validRecoveryKey(recovery_key)) changes.put(ProgramPresenter.RECOVERY_KEY_PREFIX + String.valueOf(recov_key_index++), recovery_key);
+        			else out.println("The recovery key entered was not valid, please try again");
+        		}
+        	} while (!recovery_key.isBlank());
         }
+        // --- End of Korbin's addition ---
 
         if (changes.isEmpty()) 
         {

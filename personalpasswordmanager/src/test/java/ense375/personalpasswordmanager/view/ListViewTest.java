@@ -104,7 +104,7 @@ class ListViewTest {
 
     void listLogins_zeroSavesAndExits() 
     {
-        viewWithInput("0\n").listLogins();
+        viewWithInput("Q\n").listLogins();
         assertEquals(1, saveCalls);
         assertTrue(printed().contains("Saved"));
     }
@@ -114,7 +114,7 @@ class ListViewTest {
     void listLogins_reportsSaveFailure() 
     {
         saveResult = false;
-        viewWithInput("0\n").listLogins();
+        viewWithInput("Q\n").listLogins();
         assertTrue(printed().contains("Could not save the report"));
     }
 

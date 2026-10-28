@@ -20,10 +20,9 @@ public class ProgramPresenter {
 	public static final String USERNAME_REGEX = "[a-zA-Z0-9_]+";
 	public static final String DOMAIN_REGEX = "[A-Za-z0-9]{2,}(?:\\.[A-Za-z0-9]{2,})+";
 	public static final String EMAIL_REGEX = "[A-Za-z0-9._+\\-]+@".concat(DOMAIN_REGEX);
+	public static final String BASE32_REGEX = "[A-Z2-7]+=*";
 	public static final String BASE64_REGEX = "[0-9a-zA-Z+/]+=*";
 	public static final String RECOVERY_KEY_REGEX = "[A-Za-z0-9]+(?:-[A-Za-z0-9]+)*";
-	
-	
 	
 	public static final String USERNAME = "username";
 	public static final String DOMAIN = "domain";
@@ -107,7 +106,7 @@ public class ProgramPresenter {
 		if (entry instanceof TOTPLogin) {
 			TOTPLogin totpentry = (TOTPLogin) entry;
 			output.put(TYPE, TOTP_TYPE);
-			output.put(TOTP_TYPE, getOneTimePassword(entry_id));
+			output.put(TOTP_TYPE, getOneTimePassword(entry_id) + String.format("  Next TOTP refresh: %ds", getTimeTilNextTOTPRefresh()));
 			List<String> recovery_keys = totpentry.getRecoveryKeys();
 			for (int i = 0; i < recovery_keys.size(); i++)
 				output.put(RECOVERY_KEY_PREFIX.concat(String.valueOf(i)), key.decrypt(recovery_keys.get(i)));
@@ -182,6 +181,10 @@ public class ProgramPresenter {
 		} else return null;
 	}
 	
+	public static int getTimeTilNextTOTPRefresh() {
+		return 30 - (int) (Instant.now().getEpochSecond() % 30L);
+	}
+	
 	public static boolean validPassword(String password) {
 		if (password == null) return false;
 		if (password.length() <= 7) return false;
@@ -204,6 +207,11 @@ public class ProgramPresenter {
 	public static boolean validBase64(String input) {
 		if (input == null) return false;
 		return Pattern.matches(BASE64_REGEX, input);
+	}
+	
+	public static boolean validBase32(String input) {
+		if (input == null) return false;
+		return Pattern.matches(BASE32_REGEX, input);
 	}
 	
 	public static boolean validRecoveryKey(String input) {

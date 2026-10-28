@@ -1,10 +1,9 @@
 package ense375.personalpasswordmanager.view;
 
-import ense375.personalpasswordmanager.model.LoginEntry;
-import ense375.personalpasswordmanager.model.TextLogin;
-import ense375.personalpasswordmanager.presenter.ProgramPresenter;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
@@ -13,10 +12,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import ense375.personalpasswordmanager.ProgramPresenter;
+import ense375.personalpasswordmanager.model.LoginEntry;
+import ense375.personalpasswordmanager.model.TextLogin;
 
 
 // Tests for Entry View to create, show, edit and delete one login
@@ -26,7 +27,7 @@ class EntryViewTest {
     private static class RecordingPresenter extends ProgramPresenter 
     {
         // what the test sets
-        LoginEntry entryToReturn;                
+        int entryToReturn;                
         Map<String, String> loginToShow;        
         boolean editResult = true;
         boolean deleteResult = true;
@@ -39,21 +40,21 @@ class EntryViewTest {
         Integer deletedId;
 
         @Override
-        public LoginEntry createNewTextLogin(String username, String password, String website) 
+        public int createNewTextLogin(String username, String password, String website) 
         {
             textLogin = username + "|" + password + "|" + website;
             return entryToReturn;
         }
 
         @Override
-        public LoginEntry createNewTOTPLogin(String username, String secretKey, String website, List<String> recoveryKeys) 
+        public int createNewTOTPLogin(String username, String secretKey, String website, List<String> recoveryKeys) 
         {
             totpLogin = username + "|" + secretKey + "|" + website + "|" + recoveryKeys;
             return entryToReturn;
         }
 
         @Override
-        public String getOneTimePassword(LoginEntry entry) 
+        public String getOneTimePassword(int entry_id) 
         {
             return "123456";
         }
@@ -90,7 +91,7 @@ class EntryViewTest {
         output = new ByteArrayOutputStream();
         out = new PrintStream(output);
         presenter = new RecordingPresenter();
-        presenter.entryToReturn = new TextLogin("alice", "example.com", "hunter2");
+        presenter.entryToReturn = 0;
     }
 
     // Builds an EntryView that reads the given text 
@@ -142,9 +143,9 @@ class EntryViewTest {
     }
 
     @Test
-    void createNewLogin_reportsFailureWhenPresenterReturnsNull() 
+    void createNewLogin_reportsFailureWhenPresenterReturnsNegativeOne() 
     {
-        presenter.entryToReturn = null;
+        presenter.entryToReturn = -1;
 
         viewWithInput("1\nalice\nexample.com\nhunter2\n").createNewLogin();
         assertTrue(printed().contains("Could not create"));

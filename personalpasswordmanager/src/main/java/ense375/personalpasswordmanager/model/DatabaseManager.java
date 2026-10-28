@@ -17,11 +17,13 @@ public class DatabaseManager {
 	
 	private File database;
 	
-	public static final String TEXT_ENTRY_REGEX = "\\{username:\\\"(?<username>.+)\\\";domain:\\\"(?<domain>.+)\\\";password:\\\"(?<password>[A-Za-z0-9+/]+=*)\\\";created:(?<created>[0-9]+);lastModified:(?<modified>[0-9]+)\\}";
+	public static final String TEXT_ENTRY_REGEX = "\\{username:\\\"(?<username>[^ \"]+)\\\";domain:\\\"(?<domain>[^ \"]+)\\\";password:\\\"(?<password>[A-Za-z0-9+/]+=*)\\\";created:(?<created>[0-9]+);lastModified:(?<modified>[0-9]+)\\}";
 	public static final String TEXT_ENTRY_FORMAT = "{username:\"%s\";domain:\"%s\";password:\"%s\";created:%d;lastModified:%d}";
 	
-	public static final String TOTP_ENTRY_REGEX = "\\{username:\\\"(?<username>.+)\\\";domain:\\\"(?<domain>.+)\\\";secret:\\\"(?<secret>[A-Za-z0-9+/]+=*)\\\";recovery:\\[(?<recovery>(?:\\\"[A-Za-z0-9+/-]+=*\\\",)*(?:\\\"[A-Za-z0-9+/]+=*\\\"))?\\];created:(?<created>[0-9]+);lastModified:(?<modified>[0-9]+)\\}";
+	public static final String TOTP_ENTRY_REGEX = "\\{username:\\\"(?<username>[^ \"]+)\\\";domain:\\\"(?<domain>[^ \"]+)\\\";secret:\\\"(?<secret>[A-Za-z0-9+/]+=*)\\\";recovery:\\[(?<recovery>(?:\\\"[A-Za-z0-9+/-]+=*\\\",)*(?:\\\"[A-Za-z0-9+/]+=*\\\"))?\\];created:(?<created>[0-9]+);lastModified:(?<modified>[0-9]+)\\}";
 	public static final String TOTP_ENTRY_FORMAT = "{username:\"%s\";domain:\"%s\";secret:\"%s\";recovery:[%s];created:%d;lastModified:%d}";
+	
+	private String HEADER = "Personal Password Manager - ".concat(System.getProperty("user.name"));
 	
 	public DatabaseManager(Path datafile) {
 		this.database = datafile.toAbsolutePath().toFile();
@@ -35,14 +37,16 @@ public class DatabaseManager {
 	public boolean validateKey(PrimaryKey key) {
 		if (key == null) return false;
 		try {
-			if (!database.exists()) database.createNewFile();
+			if (!database.exists()) {
+				return writeDatabase(null, key);
+			}
 			BufferedReader reader = new BufferedReader(new FileReader(database));
 			String entry = reader.readLine();
 			reader.close();
-			if (entry == null) return true;
+			if (entry == null) return false;
 			entry = key.decrypt(entry);
 			if (entry == null) return false;
-			if (Pattern.matches(TEXT_ENTRY_REGEX, entry) || Pattern.matches(TOTP_ENTRY_REGEX, entry)) return true;
+			if (entry.equals(HEADER)) return true;
 			return false;
 			
 		} catch (IOException e) {
@@ -69,9 +73,13 @@ public class DatabaseManager {
 		
 		ArrayList<LoginEntry> entries = new ArrayList<LoginEntry>();
 		
+		String header = database_buffer.removeFirst();
+		header = key.decrypt(header);
+		if (header == null || !header.equals(HEADER)) return null;
+		
 		for (String buffer : database_buffer) {
 			LoginEntry entry = extractLoginEntryFromDatabaseEntry(key.decrypt(buffer));
-			if (entry == null) return null;
+			if (entry == null) continue;
 			entries.add(entry);
 		}
 		
@@ -81,7 +89,8 @@ public class DatabaseManager {
 	public boolean writeDatabase(List<LoginEntry> entries, PrimaryKey key) {
 		if (key == null) return false;
 		ArrayList<String> database_buffer = new ArrayList<String>();
-		entries.forEach((entry) -> database_buffer.add(formatEntryForDatabaseWrite(entry)));
+		database_buffer.add(HEADER);
+		if (entries != null) entries.forEach((entry) -> database_buffer.add(formatEntryForDatabaseWrite(entry)));
 		String output_buffer = String.join("\n", database_buffer.stream().map((entry) -> key.encrypt(entry)).toList());
 		
 		try {

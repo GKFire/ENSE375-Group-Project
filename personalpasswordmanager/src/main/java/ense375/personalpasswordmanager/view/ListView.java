@@ -108,20 +108,26 @@ public class ListView {
             out.println("No login with that ID.");
             return;
         }
+        
+        // Korbin: Stay on login entry, and add option to refresh
+        String action;
+        
+        do {
+            entryView.showLoginEntry(entryId);
 
-        entryView.showLoginEntry(entryId);
+            action = promptUserInput("E = edit   D = delete  'blank' = refresh  B = Back\nChoose: ");
 
-        // Pressing Enter simply goes back to the list.
-        String action = promptUserInput("E = edit   D = delete   Enter = back: ");
-
-        if (action.equalsIgnoreCase("e")) 
-        {
-            entryView.editExistingLogin(entryId);
-        } 
-        else if (action.equalsIgnoreCase("d")) 
-        {
-            entryView.deleteLoginEntry(entryId);
-        }
+            if (action.equalsIgnoreCase("e")) 
+            {
+                entryView.editExistingLogin(entryId);
+            } 
+            else if (action.equalsIgnoreCase("d")) 
+            {
+                entryView.deleteLoginEntry(entryId);
+                break;
+            }
+        	
+        } while (!action.equalsIgnoreCase("b"));
     }
 
     // Prints a prompt and reads one line of input.
