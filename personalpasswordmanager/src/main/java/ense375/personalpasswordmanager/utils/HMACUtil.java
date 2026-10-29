@@ -14,6 +14,18 @@ public class HMACUtil {
 	private static ByteBuffer BYTE_BUFFER = ByteBuffer.allocate(Long.BYTES);
 	private static final int KEY_LENGTH = 64;
 	
+	/**
+	 * HOTP_SHA_1
+	 * 
+	 * Based of RFC6238 TOTP: Time-Based One-Time Password Algorithm
+	 * https://www.rfc-editor.org/info/rfc6238/#section-4
+	 * 
+	 * 
+	 * @param key (String of key in BASE32 encoding)
+	 * @param offset
+	 * @param num_digits
+	 * @return The current time-based one-time password from the given BASE32 encoded key, and time offset.
+	 */
 	public static int HOTP_SHA_1(String key, long offset, int num_digits) {
 		byte[] value = HMAC_SHA_1(key, offset);
 		byte byte_offset = (byte) (value[19] & 0x0F);
@@ -21,6 +33,15 @@ public class HMACUtil {
 		return ByteBuffer.wrap(truncated).getInt() % (int) Math.pow(10, num_digits);
 	}
 
+	/**
+	 * 
+	 * Based of RFC4226 HOTP: An HMAC-Based One-Time Password Algorithm
+	 * https://www.rfc-editor.org/info/rfc4226/#section-5
+	 * 
+	 * @param key (String of key in BASE32 encoding)
+	 * @param offset
+	 * @return An encoded byte array 40-bytes in length generated from the key with a given long offset
+	 */
 	public static byte[] HMAC_SHA_1(String key, long offset) {
 		BYTE_BUFFER.clear();
 		try {
@@ -59,10 +80,12 @@ public class HMACUtil {
 				return null;
 			}
 		}
-		else return Arrays.copyOf(base32.decode(key), 64);
+		else return Arrays.copyOf(base32.decode(key), KEY_LENGTH);
 	}
 	
 	public static byte[] concatByteArrays(byte[] first, byte[] second) {
+		if (first == null) return null;
+		if (second == null) return null;
 		byte[] output = Arrays.copyOf(first, first.length + second.length);
 		for (int i = 0 ; i < second.length; i++)
 			output[i + first.length] = second[i];

@@ -192,7 +192,7 @@ public class ProgramPresenterTest {
 		map_3.put("username", "email@email.com");
 		map_3.put("domain", "my.domain");
 		map_3.put("type", "totp");
-		map_3.put("totp", presenter.getOneTimePassword(3));
+		map_3.put("totp", presenter.getOneTimePassword(3) + String.format("  Next TOTP refresh: %ds", ProgramPresenter.getTimeTilNextTOTPRefresh()));
 		map_3.put("recovery_key_0", "recoverykey1");
 		map_3.put("recovery_key_1", "recoverykey2");
 		
@@ -202,7 +202,7 @@ public class ProgramPresenterTest {
 		map_4.put("username", "my.email@email.com");
 		map_4.put("domain", "my.domain");
 		map_4.put("type", "totp");
-		map_4.put("totp", presenter.getOneTimePassword(4));
+		map_4.put("totp", presenter.getOneTimePassword(4) + String.format("  Next TOTP refresh: %ds", ProgramPresenter.getTimeTilNextTOTPRefresh()));
 		map_4.put("recovery_key_0", "recoverykey1");
 		
 		assertTrue(matchesEntryMap(map_4, presenter.getLogin(4)));
@@ -303,7 +303,7 @@ public class ProgramPresenterTest {
 		map_2.put("username", "email@email.com");
 		map_2.put("domain", "my.domain");
 		map_2.put("type", "totp");
-		map_2.put("totp", presenter.getOneTimePassword(2));
+		map_2.put("totp", presenter.getOneTimePassword(2) + String.format("  Next TOTP refresh: %ds", ProgramPresenter.getTimeTilNextTOTPRefresh()));
 		map_2.put("recovery_key_0", "new_recovery_key_0");
 		map_2.put("recovery_key_1", "new_recovery_key_1");
 		map_2.put("recovery_key_2", "new_recovery_key_2");
@@ -314,7 +314,7 @@ public class ProgramPresenterTest {
 		map_3.put("username", "my.email@email.com");
 		map_3.put("domain", "my.domain");
 		map_3.put("type", "totp");
-		map_3.put("totp", presenter.getOneTimePassword(3));
+		map_3.put("totp", presenter.getOneTimePassword(3) + String.format("  Next TOTP refresh: %ds", ProgramPresenter.getTimeTilNextTOTPRefresh()));
 		map_3.put("recovery_key_0", "recoverykey1");
 		
 		assertTrue(matchesEntryMap(map_3, presenter_other.getLogin(3)));
